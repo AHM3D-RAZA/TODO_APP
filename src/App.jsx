@@ -1,6 +1,6 @@
 import './App.css'
 import { useState } from 'react'
-import { Button } from '../components/Button'
+import { Button } from './components/Button'
 
 function App() {
   let [text, setText] = useState("")
