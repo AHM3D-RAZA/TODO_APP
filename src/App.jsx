@@ -28,7 +28,7 @@ function App() {
     <div className='bg-black  min-w-screen min-h-screen flex justify-center items-center'>
     
     <section className='bg-gray-800 h-120 w-150 text-white rounded-xl p-1'>
-      <h1 className='font-bold text-2xl text-blue-300 text-center mb-3'>TODO App</h1>  
+      <h1 className='font-bold text-2xl text-blue-200 text-center mb-3'>TODO App</h1>  
       <div className='flex m-2'>
         <input type="text" value={text} placeholder='Enter your task!' className='w-120 rounded-xl border p-3 my-2 mb-2' onChange={(e)=>{
           setText(e.target.value)
