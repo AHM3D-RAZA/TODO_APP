@@ -1,58 +1,67 @@
 import './App.css'
 import { useState } from 'react'
 import { Button } from './components/Button'
+import { useOutletContext } from 'react-router'
 
 function App() {
-  let [text, setText] = useState("")
-  let [tasks, setTasks] = useState([])
+  let [taskData, setTaskData] = useState({
+      text: "",
+      date: "",
+      priority: "High"
+    })
+  let {tasks, setTasks} = useOutletContext();
 
   function addTask(){
-    setTasks([...tasks, text])
-    setText("")
-  }
-
-  function deleteTask(id){
-    setTasks(tasks.filter(((task, index) => {
-     console.log(index)
-      return  index != id
-      
-    })))
-    
-  }
-
-  function clearList(){
-    setTasks([])
+    if(!taskData.text.trim()) return
+    setTasks([taskData, ...tasks])
+    setTaskData({
+      text: "",
+      date: "",
+      priority: "High"
+    })
   }
 
   return (
-    <div className='bg-black  min-w-screen min-h-screen flex justify-center items-center'>
+    <div className='bg-gray-950 min-h-screen flex justify-center items-center'>
     
-    <section className='bg-gray-800 h-120 w-150 text-white rounded-xl p-1'>
-      <h1 className='font-bold text-2xl text-blue-200 text-center mb-3'>TODO App</h1>  
-      <div className='flex m-2'>
-        <input type="text" value={text} placeholder='Enter your task!' className='w-120 rounded-xl border p-3 my-2 mb-2' onChange={(e)=>{
-          setText(e.target.value)
-        }}/>
-        <Button fn={text.trim()? addTask : ""} text='Add'/>
-      </div>
-      <div>
-          {tasks.map((task, id)=>{
-            return (
-              <div className='flex justify-between items-center border-2 rounded-xl m-2 bg-gray-800'>
-                <p key={id} className='m-2'>
-                  {task}
-                </p>
-                <Button fn={()=>{
-                    deleteTask(id)
-                  }} text='Delete' />
-                </div>
-            )
-        })}
-      </div>
-      <Button fn={clearList} text='ClearTasks'/>
-    </section>
+      <section className='bg-gray-800 w-150 text-white rounded-xl p-4 shadow-lg'>
+        <h1 className='font-bold text-2xl text-blue-200 text-center mb-6'>Add Task</h1>  
+
+        <div className='space-y-1'>
+
+          <div className='flex items-center'>
+            <label htmlFor="task" className=''> Title:   
+            <input type="text" value={taskData.text} placeholder='Enter your task!' className='w-120 rounded-xl border p-3 m-2' onChange={(e)=>{
+            setTaskData({...taskData, text: e.target.value})
+          }}/></label>
+          </div>
+          
+          <div className='flex items-center'>
+            <label htmlFor="date"> Date:    
+            <input type='date' value={taskData.date} placeholder='Enter task completion date' className='w-120 rounded-xl border p-3 m-2' onChange={(e)=>{
+            setTaskData({...taskData, date: e.target.value})
+          }}/></label>
+          </div>
+          
+          <div className='flex items-center'>
+            <label htmlFor="priority"> Priority: 
+              <select value={taskData.priority} 
+                      onChange={(e)=>setTaskData({...taskData, priority: e.target.value})} 
+                      className='w-120 rounded-xl border p-3 m-2'>
+                <option value="High" className='bg-gray-700'>High</option>
+                <option value="Med" className='bg-gray-700'>Medium</option>
+                <option value="Low" className='bg-gray-700'>Low</option>
+              </select>
+            </label>
+          </div>
+          
+          <div className='flex justify-end'>
+            <Button fn={addTask} text='Add'/>
+          </div>
+          
+        </div>
+      </section>
     </div>
-    
 )
 }
 
